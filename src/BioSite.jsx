@@ -1,6 +1,5 @@
 // Firebase-integrated version with real-time global chat
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import emailjs from "emailjs-com";
 import { motion } from "framer-motion";
 import { initializeApp } from "firebase/app";
@@ -61,7 +60,6 @@ export default function BioSite() {
   });
   const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem("isAdmin") === "true");
   const [adminPanelOpen, setAdminPanelOpen] = useState(false);
-  const navigate = useNavigate();
   const inputRef = useRef(null);
   const outputRef = useRef(null);
 
@@ -84,7 +82,7 @@ export default function BioSite() {
         .filter(log => isAdmin || log.userName === userName || (log.userName === "Abdallah" && log.recipient === userName))
         .map(log => {
           const userLine = log.userName === "Abdallah"
-  ? `<span class='text-yellow-400'> Abdallah</span>: ${log.user} (${log.time}) <span class='text-blue-400'>✓</span> <span class='text-blue-400'>✓</span>`
+  ? `<span class='text-yellow-400'>🫅 Abdallah</span>: ${log.user} (${log.time}) <span class='text-blue-400'>✓</span> <span class='text-blue-400'>✓</span>`
   : `👤 ${log.userName === userName ? "You" : log.userName}: ${log.user} (${log.time}) <span class='text-blue-400 transition-opacity duration-500'>✓</span>${log.seenByAdmin ? " <span class='text-blue-400 transition-opacity duration-500 animate-pulse'>✓</span>" : ""}`;
           return userLine;
         });
@@ -151,7 +149,8 @@ export default function BioSite() {
     let result = [];
     switch (baseCmd) {
       case "clear":
-        setStaticOutput((prev) => [...prev, `$ ${command}`, "🧹 This command no longer clears global chat."]);
+        setStaticOutput(["Abdallah Elabd 💚", "Twitter: @abdallahelabd05"]);
+        setAnimatedOutput([]);
         setCommand("");
         return;
       case "admin":
@@ -159,7 +158,6 @@ export default function BioSite() {
           setIsAdmin(true);
           localStorage.setItem("isAdmin", "true");
           setStaticOutput((prev) => [...prev, `$ ${command}`, "✅ Admin access granted."]);
-          navigate('/admin');
         } else {
           setStaticOutput((prev) => [...prev, `$ ${command}`, "❌ Incorrect passcode."]);
         }
